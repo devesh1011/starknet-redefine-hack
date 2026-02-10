@@ -1,0 +1,6 @@
+[package]
+name = "condenser"
+type = "bin"
+authors = [""]
+
+[dependencies]
