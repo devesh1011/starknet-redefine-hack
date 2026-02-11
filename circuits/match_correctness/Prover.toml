@@ -1,0 +1,15 @@
+# Prover.toml for match_correctness circuit
+# Private inputs
+buy_price = "9680000000000"
+buy_amount = "10000000"
+buy_nonce = "0x111"
+sell_price = "9650000000000"
+sell_amount = "10000000"
+sell_nonce = "0x222"
+settlement_amount = "10000000"
+settlement_price = "9665000000000"
+
+# Public inputs
+buy_commitment = "0x1b6ec7c8dead2f6751d4feb13d822b38713ba6a5e881654e68ce473118a7b8c6"
+sell_commitment = "0x13a0f18243f42108a634694e6a8eca6c3102c7d14cc7b41d634b27705f863afd"
+settlement_commitment = "0x12c2d7dc725f2b3e96e244059dbdbdfaafb97603daa3b10b8150d723c5e241f9"
