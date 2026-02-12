@@ -1,0 +1,12 @@
+# Prover.toml for order_validity circuit
+# Private inputs
+price = "9680000000000"
+amount = "10000000"
+nonce = "0x123456789abcdef"
+direction = "0"
+tongo_balance = "100000000"
+user_secret = "0xdeadbeefcafe"
+
+# Public inputs (pre-computed by running nargo test __print_values --show-output)
+commitment = "0x0cf98b5f96368fb4bdca442ce085e53250ab4cf803fb8e7ef8a01d66b7f358b6"
+trader_tongo_pubkey = "0x02786eee6aa74df908834dcbade34199416ef3a5b919a07726217ad98b9714a5"
