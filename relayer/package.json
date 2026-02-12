@@ -1,0 +1,22 @@
+{
+  "name": "phantom-pool-relayer",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch index.ts",
+    "start": "bun run index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.7.2",
+    "dotenv": "^16.5.0",
+    "hono": "^4.12.2",
+    "starknet": "^9.2.1",
+    "zod": "^4.3.6"
+  }
+}
