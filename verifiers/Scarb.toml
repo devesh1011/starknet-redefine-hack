@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "condenser",
+    "match_correctness",
+    "order_validity",
+]
