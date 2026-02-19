@@ -1,7 +1,0 @@
-[package]
-name = "condenser"
-type = "bin"
-authors = [""]
-
-[dependencies]
-# poseidon is in stdlib — no extra deps needed for Noir 1.0.0-beta.16
