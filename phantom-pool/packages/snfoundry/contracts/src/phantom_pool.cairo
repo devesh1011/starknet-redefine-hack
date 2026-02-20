@@ -14,8 +14,8 @@ use starknet::ContractAddress;
 // External interface: Garaga-generated UltraKeccakZK verifier (per circuit)
 // ---------------------------------------------------------------------------
 #[starknet::interface]
-pub trait IUltraKeccakZKHonkVerifier<TContractState> {
-    fn verify_ultra_keccak_zk_honk_proof(
+pub trait IGroth16VerifierBN254<TContractState> {
+    fn verify_groth16_proof_bn254(
         self: @TContractState, full_proof_with_hints: Span<felt252>,
     ) -> Result<Span<u256>, felt252>;
 }
@@ -119,7 +119,7 @@ pub mod PhantomPool {
         get_contract_address,
     };
     use super::{
-        IUltraKeccakZKHonkVerifierDispatcher, IUltraKeccakZKHonkVerifierDispatcherTrait,
+        IGroth16VerifierBN254Dispatcher, IGroth16VerifierBN254DispatcherTrait,
         MatchedPair, OrderCommitment, DENOM_ONE, DENOM_TEN, DENOM_TENTH, MERKLE_DEPTH,
     };
 
@@ -327,10 +327,10 @@ pub mod PhantomPool {
             _assert_valid_denomination(denomination);
 
             // 2. Verify CondenseProof via Garaga verifier
-            let verifier = IUltraKeccakZKHonkVerifierDispatcher {
+            let verifier = IGroth16VerifierBN254Dispatcher {
                 contract_address: self.condenser_verifier.read(),
             };
-            let result = verifier.verify_ultra_keccak_zk_honk_proof(full_proof_with_hints);
+            let result = verifier.verify_groth16_proof_bn254(full_proof_with_hints);
             assert(result.is_ok(), 'condenser proof invalid');
             let public_inputs = result.unwrap();
 
@@ -383,10 +383,10 @@ pub mod PhantomPool {
         // -------------------------------------------------------------------
         fn submit_order(ref self: ContractState, full_proof_with_hints: Span<felt252>) {
             // Verify proof
-            let verifier = IUltraKeccakZKHonkVerifierDispatcher {
+            let verifier = IGroth16VerifierBN254Dispatcher {
                 contract_address: self.order_validity_verifier.read(),
             };
-            let result = verifier.verify_ultra_keccak_zk_honk_proof(full_proof_with_hints);
+            let result = verifier.verify_groth16_proof_bn254(full_proof_with_hints);
             assert(result.is_ok(), 'order proof invalid');
             let public_inputs = result.unwrap();
 
@@ -437,10 +437,10 @@ pub mod PhantomPool {
         // -------------------------------------------------------------------
         fn submit_match(ref self: ContractState, full_proof_with_hints: Span<felt252>) {
             // Verify proof
-            let verifier = IUltraKeccakZKHonkVerifierDispatcher {
+            let verifier = IGroth16VerifierBN254Dispatcher {
                 contract_address: self.match_correctness_verifier.read(),
             };
-            let result = verifier.verify_ultra_keccak_zk_honk_proof(full_proof_with_hints);
+            let result = verifier.verify_groth16_proof_bn254(full_proof_with_hints);
             assert(result.is_ok(), 'match proof invalid');
             let public_inputs = result.unwrap();
 
