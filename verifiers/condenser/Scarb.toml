@@ -8,4 +8,4 @@ starknet = ">=2.12.2"
 garaga = "1.0.1"
 
 [[target.starknet-contract]]
-casm = false
+casm = true
