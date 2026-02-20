@@ -87,7 +87,7 @@ fn mock_balance(amount: u256) {
 fn mock_order_verifier_ok(pub0: u256, pub1: u256) {
     let r: Result<Array<u256>, felt252> = Result::Ok(array![pub0, pub1]);
     mock_call(
-        VERIFIER_ORDER(), selector!("verify_ultra_keccak_zk_honk_proof"), r, 1_u32,
+        VERIFIER_ORDER(), selector!("verify_groth16_proof_bn254"), r, 1_u32,
     );
 }
 
@@ -95,7 +95,7 @@ fn mock_order_verifier_ok(pub0: u256, pub1: u256) {
 fn mock_match_verifier_ok(buy_c: u256, sell_c: u256, settlement_c: u256) {
     let r: Result<Array<u256>, felt252> = Result::Ok(array![buy_c, sell_c, settlement_c]);
     mock_call(
-        VERIFIER_MATCH(), selector!("verify_ultra_keccak_zk_honk_proof"), r, 1_u32,
+        VERIFIER_MATCH(), selector!("verify_groth16_proof_bn254"), r, 1_u32,
     );
 }
 
@@ -103,7 +103,7 @@ fn mock_match_verifier_ok(buy_c: u256, sell_c: u256, settlement_c: u256) {
 fn mock_order_verifier_fail() {
     let r: Result<Array<u256>, felt252> = Result::Err('proof_invalid');
     mock_call(
-        VERIFIER_ORDER(), selector!("verify_ultra_keccak_zk_honk_proof"), r, 1_u32,
+        VERIFIER_ORDER(), selector!("verify_groth16_proof_bn254"), r, 1_u32,
     );
 }
 
@@ -111,7 +111,7 @@ fn mock_order_verifier_fail() {
 fn mock_match_verifier_fail() {
     let r: Result<Array<u256>, felt252> = Result::Err('proof_invalid');
     mock_call(
-        VERIFIER_MATCH(), selector!("verify_ultra_keccak_zk_honk_proof"), r, 1_u32,
+        VERIFIER_MATCH(), selector!("verify_groth16_proof_bn254"), r, 1_u32,
     );
 }
 

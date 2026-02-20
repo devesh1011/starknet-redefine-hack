@@ -5,11 +5,27 @@ version = 1
 name = "contracts"
 version = "0.2.0"
 dependencies = [
+ "garaga",
  "openzeppelin_access",
  "openzeppelin_testing",
  "openzeppelin_token",
  "openzeppelin_utils",
  "snforge_std",
+]
+
+[[package]]
+name = "corelib_imports"
+version = "0.1.2"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:feeb2b7091634356871a9f9e1c9a2e5095a5fdbd2fbab92bc4b47ff2f8744b04"
+
+[[package]]
+name = "garaga"
+version = "1.0.1"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:66016606abe44f57781ff84919f44bebc4b3a6c6cd63f5915412086f56efaf08"
+dependencies = [
+ "corelib_imports",
 ]
 
 [[package]]
