@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@noble/hashes": "^1.7.2",
+    "circomlibjs": "^0.1.7",
     "dotenv": "^16.5.0",
     "hono": "^4.12.2",
+    "snarkjs": "^0.7.6",
     "starknet": "^9.2.1",
     "zod": "^4.3.6"
   }

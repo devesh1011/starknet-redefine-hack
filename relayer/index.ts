@@ -10,6 +10,8 @@
 import { config } from "./src/config.js";
 import { Relay } from "./src/relay.js";
 import { createServer, startServer } from "./src/server.js";
+import { initCrypto } from "./src/orderbook.js";
+import { initMatcherCrypto } from "./src/matcher.js";
 
 // ── Print startup banner ──────────────────────────────────────────────────────
 console.log(`
@@ -25,6 +27,9 @@ console.log(`
 `);
 
 // ── Instantiate core components ───────────────────────────────────────────────
+await initCrypto();
+await initMatcherCrypto();
+
 const relay = new Relay();
 
 // ── Build Hono app ────────────────────────────────────────────────────────────
