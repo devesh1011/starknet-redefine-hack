@@ -1,6 +1,6 @@
 [package]
-name = "condenser_verifier"
-version = "0.1.0"
+name = "condenser"
+version = "0.1.1"
 edition = "2024_07"
 
 [dependencies]
