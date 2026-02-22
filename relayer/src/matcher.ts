@@ -9,21 +9,30 @@
 //   settlement_price  = (buy_price + sell_price) / 2   [integer midpoint]
 //   settlement_commitment = Pedersen(settlement_amount, settlement_price)
 
-import { hash } from "starknet";
+// @ts-ignore
+import { buildPoseidon } from "circomlibjs";
 import type { Order, MatchResult } from "./types.js";
 import type { OrderBook } from "./orderbook.js";
 import { randomUUID } from "crypto";
 
+let poseidon: any;
+
+export async function initMatcherCrypto() {
+  if (!poseidon) {
+    poseidon = await buildPoseidon();
+  }
+}
+
 // ─── Commitment helpers ────────────────────────────────────────────────────────
-// Mirrors Noir: dep::std::hash::pedersen_hash([settlement_amount as Field, settlement_price as Field])
+// Mirrors Circom: Poseidon(settlement_amount, settlement_price)
 export function computeSettlementCommitment(
   settlementAmount: bigint,
   settlementPrice: bigint
 ): string {
-  return hash.computePedersenHashOnElements([
-    `0x${settlementAmount.toString(16)}`,
-    `0x${settlementPrice.toString(16)}`,
-  ]);
+  if (!poseidon) throw new Error("Matcher crypto not initialized");
+  
+  const hash = poseidon([settlementAmount, settlementPrice]);
+  return "0x" + poseidon.F.toString(hash, 16).padStart(64, '0');
 }
 
 // ─── MatchingEngine ───────────────────────────────────────────────────────────

@@ -59,20 +59,25 @@ export const config = {
   ),
 
   // ── Proof toolchain paths ─────────────────────────────────────────────────
-  /** Absolute path to the match_correctness circuit directory */
-  circuitDir: optional(
-    "CIRCUIT_DIR",
+  /** Absolute path to the match_correctness circuit wasm directory */
+  wasmPath: optional(
+    "WASM_PATH",
     resolve(
       import.meta.dir,
-      "../../circuits/match_correctness"
+      "../../circuits/match_correctness/circuit_js/circuit.wasm"
     )
   ),
-  /** Path to the `bb` binary (Barretenberg) */
-  bbBin: optional("BB_BIN", "bb"),
-  /** Path to the `nargo` binary  */
-  nargoBin: optional("NARGO_BIN", "nargo"),
-  /** Path to the `garaga` binary / python module runner */
-  garagaBin: optional("GARAGA_BIN", "garaga"),
+  /** Absolute path to the match_correctness circuit zkey */
+  zkeyPath: optional(
+    "ZKEY_PATH",
+    resolve(
+      import.meta.dir,
+      "../../circuits/match_correctness/match_correctness_final.zkey"
+    )
+  ),
+  /** Path to the garaga python environment or script for formatting calldata */
+  pythonVenvPath: optional("PYTHON_VENV_PATH", resolve(import.meta.dir, "../../garaga-venv")),
+
 
 
   // ── API server ────────────────────────────────────────────────────────────

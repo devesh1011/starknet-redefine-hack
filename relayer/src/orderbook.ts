@@ -11,26 +11,29 @@
 //   We verify this on the Starknet Pedersen curve using starknet.js before
 //   accepting an order into the book.
 
-import { hash } from "starknet";
+// @ts-ignore
+import { buildPoseidon } from 'circomlibjs';
 import type { Order, Direction } from "./types.js";
 
-// ─── Pedersen commitment helper ───────────────────────────────────────────────
-// Mirrors the Noir circuit:
-//   dep::std::hash::pedersen_hash([direction as Field, price as Field, amount as Field, nonce])
-// starknet.js `hash.computePedersenHashOnElements` chains Pedersen([a, b, c, d])
-// exactly as the Cairo / Noir stdlib does.
+let poseidon: any;
+
+export async function initCrypto() {
+  if (!poseidon) {
+    poseidon = await buildPoseidon();
+  }
+}
+
+// ─── Commitment helper ───────────────────────────────────────────────
 export function computeCommitment(
   direction: Direction,
   price: bigint,
   amount: bigint,
   nonce: bigint
 ): string {
-  return hash.computePedersenHashOnElements([
-    `0x${direction.toString(16)}`,
-    `0x${price.toString(16)}`,
-    `0x${amount.toString(16)}`,
-    `0x${nonce.toString(16)}`,
-  ]);
+  if (!poseidon) throw new Error("Crypto not initialized");
+  
+  const hash = poseidon([direction, price, amount, nonce]);
+  return "0x" + poseidon.F.toString(hash, 16).padStart(64, '0');
 }
 
 // ─── OrderBook ────────────────────────────────────────────────────────────────
