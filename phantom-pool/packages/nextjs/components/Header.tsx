@@ -1,185 +1,168 @@
 "use client";
 
-import React, { useCallback, useRef, useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
-import { useOutsideClick } from "~~/hooks/scaffold-stark";
+import { motion, AnimatePresence } from "motion/react";
+import { Menu, X } from "lucide-react";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
-import { useTheme } from "next-themes";
-import { useTargetNetwork } from "~~/hooks/scaffold-stark/useTargetNetwork";
-import { devnet } from "@starknet-react/chains";
-import { SwitchTheme } from "./SwitchTheme";
-import { useAccount, useNetwork, useProvider } from "@starknet-react/core";
-import { BlockIdentifier } from "starknet";
 
 type HeaderMenuLink = {
   label: string;
   href: string;
-  icon?: React.ReactNode;
 };
 
 export const menuLinks: HeaderMenuLink[] = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
-  },
+  { label: "Home", href: "/" },
+  { label: "Technology", href: "/#technology" },
+  { label: "Docs", href: "/#docs" },
+  { label: "Team", href: "/#team" },
+  { label: "Trade", href: "/trade" },
 ];
 
-export const HeaderMenuLinks = () => {
-  const pathname = usePathname();
-  const { theme } = useTheme();
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    setIsDark(theme === "dark");
-  }, [theme]);
-  return (
-    <>
-      {menuLinks.map(({ label, href, icon }) => {
-        const isActive = pathname === href;
-        return (
-          <li key={href}>
-            <Link
-              href={href}
-              passHref
-              className={`${
-                isActive
-                  ? "bg-gradient-nav text-white! active:bg-gradient-nav shadow-md"
-                  : ""
-              } py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col hover:bg-gradient-nav hover:text-white`}
-            >
-              {icon}
-              <span>{label}</span>
-            </Link>
-          </li>
-        );
-      })}
-    </>
-  );
-};
-
-/**
- * Site header
- */
 export const Header = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const burgerMenuRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
-  useOutsideClick(
-    burgerMenuRef,
-    useCallback(() => setIsDrawerOpen(false), []),
-  );
-
-  const { targetNetwork } = useTargetNetwork();
-  const isLocalNetwork = targetNetwork.network === devnet.network;
-
-  const { provider } = useProvider();
-  const { address, status, chainId } = useAccount();
-  const { chain } = useNetwork();
-  const [isDeployed, setIsDeployed] = useState(true);
-
-  useEffect(() => {
-    if (
-      status === "connected" &&
-      address &&
-      chainId === targetNetwork.id &&
-      chain.network === targetNetwork.network
-    ) {
-      provider
-        .getClassHashAt(address)
-        .then((classHash) => {
-          if (classHash) setIsDeployed(true);
-          else setIsDeployed(false);
-        })
-        .catch((e) => {
-          console.error("contract check", e);
-          if (e.toString().includes("Contract not found")) {
-            setIsDeployed(false);
-          }
-        });
-    }
-  }, [
-    status,
-    address,
-    provider,
-    chainId,
-    targetNetwork.id,
-    targetNetwork.network,
-    chain.network,
-  ]);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <div className=" lg:static top-0 navbar min-h-0 shrink-0 justify-between z-20 px-0 sm:px-2">
-      <div className="navbar-start w-auto lg:w-1/2 -mr-2">
-        <div className="lg:hidden dropdown" ref={burgerMenuRef}>
-          <label
-            tabIndex={0}
-            className={`ml-1 btn btn-ghost 
-              [@media(max-width:379px)]:px-3! [@media(max-width:379px)]:py-1! 
-              [@media(max-width:379px)]:h-9! [@media(max-width:379px)]:min-h-0!
-              [@media(max-width:379px)]:w-10!
-              ${isDrawerOpen ? "hover:bg-secondary" : "hover:bg-transparent"}`}
-            onClick={() => {
-              setIsDrawerOpen((prevIsOpenState) => !prevIsOpenState);
-            }}
-          >
-            <Bars3Icon className="h-1/2" />
-          </label>
-          {isDrawerOpen && (
-            <ul
-              tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow-sm rounded-box w-52 bg-base-100"
-              onClick={() => {
-                setIsDrawerOpen(false);
-              }}
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-6 px-4 pointer-events-none">
+      <div className="flex items-center justify-between px-6 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/10 shadow-lg w-full max-w-6xl relative z-10 pointer-events-auto">
+        <div className="flex items-center">
+          <Link href="/">
+            <motion.div
+              className="w-8 h-8 mr-6 cursor-pointer"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              whileHover={{ rotate: 10 }}
+              transition={{ duration: 0.3 }}
             >
-              <HeaderMenuLinks />
-            </ul>
-          )}
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="16" cy="16" r="16" fill="url(#paint0_linear)" />
+                <defs>
+                  <linearGradient
+                    id="paint0_linear"
+                    x1="0"
+                    y1="0"
+                    x2="32"
+                    y2="32"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#FF9966" />
+                    <stop offset="1" stopColor="#FF5E62" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </motion.div>
+          </Link>
         </div>
-        <Link
-          href="/"
-          passHref
-          className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-8">
+          {menuLinks.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Link
+                  href={item.href}
+                  className={`text-sm hover:text-gray-300 transition-colors font-medium ${
+                    isActive ? "text-white" : "text-gray-300"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </motion.div>
+            );
+          })}
+        </nav>
+
+        {/* Desktop CTA Button / Wallet Connect */}
+        <motion.div
+          className="hidden md:flex items-center"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
         >
-          <div className="flex relative w-10 h-10">
-            <Image
-              alt="SE2 logo"
-              className="cursor-pointer"
-              fill
-              src="/logo.svg"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-Stark</span>
-            <span className="text-xs">Starknet dev stack</span>
-          </div>
-        </Link>
-        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
-          <HeaderMenuLinks />
-        </ul>
+          <CustomConnectButton />
+        </motion.div>
+
+        {/* Mobile Menu Button */}
+        <motion.button
+          className="md:hidden flex items-center"
+          onClick={toggleMenu}
+          whileTap={{ scale: 0.9 }}
+        >
+          <Menu className="h-6 w-6 text-white" />
+        </motion.button>
       </div>
-      <div className="navbar-end grow mr-2 gap-4">
-        {status === "connected" && !isDeployed ? (
-          <span className="bg-[#8a45fc] text-[9px] p-1 text-white">
-            Wallet Not Deployed
-          </span>
-        ) : null}
-        <CustomConnectButton />
-        {/* <FaucetButton /> */}
-        <SwitchTheme
-          className={`pointer-events-auto ${
-            isLocalNetwork ? "mb-1 lg:mb-0" : ""
-          }`}
-        />
-      </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/95 backdrop-blur-md z-50 pt-24 px-6 md:hidden pointer-events-auto"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          >
+            <motion.button
+              className="absolute top-6 right-6 p-2"
+              onClick={toggleMenu}
+              whileTap={{ scale: 0.9 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <X className="h-6 w-6 text-white" />
+            </motion.button>
+            <div className="flex flex-col space-y-6">
+              {menuLinks.map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 + 0.1 }}
+                  exit={{ opacity: 0, x: 20 }}
+                >
+                  <Link
+                    href={item.href}
+                    className="text-base text-white font-medium hover:text-gray-300"
+                    onClick={toggleMenu}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="pt-6 w-full flex justify-center"
+              >
+                <div onClick={toggleMenu}>
+                  <CustomConnectButton />
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
