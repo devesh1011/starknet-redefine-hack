@@ -8,10 +8,10 @@ const Home = () => {
       <div className="px-5">
         <h1 className="text-center">
           <span className="block text-2xl mb-2">Welcome to</span>
-          <span className="block text-4xl font-bold">Scaffold-Stark 2</span>
+          <span className="block text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Phantom Pool</span>
         </h1>
         <ConnectedAddress />
-        <p className="text-center text-lg">
+        <p className="text-center text-lg hidden">
           Edit your smart contract{" "}
           <code className="bg-underline italic text-base font-bold max-w-full break-words break-all inline-block">
             your_contract.cairo
@@ -27,33 +27,14 @@ const Home = () => {
         <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
           <div className="flex flex-col bg-base-100 relative text-[12px] px-10 py-10 text-center items-center max-w-xs rounded-3xl border border-gradient">
             <div className="trapeze"></div>
-            <Image
-              src="/debug-icon.svg"
-              alt="icon"
-              width={26}
-              height={30}
-            ></Image>
-            <p>
-              Tinker with your smart contract using the{" "}
-              <Link href="/debug" passHref className="link">
-                Debug Contracts
+            <span className="text-4xl mb-2">🦇</span>
+            <p className="text-lg">
+              <Link href="/trade" passHref className="link text-xl font-bold">
+                Enter Dark Pool
               </Link>{" "}
-              tab.
             </p>
           </div>
-          <div className="flex flex-col bg-base-100 relative text-[12px] px-10 py-10 text-center items-center max-w-xs rounded-3xl border border-gradient">
-            <div className="trapeze"></div>
-            <Image
-              src="/explorer-icon.svg"
-              alt="icon"
-              width={20}
-              height={32}
-            ></Image>
-            <p>
-              Play around with Multiwrite transactions using
-              useScaffoldMultiWrite() hook
-            </p>
-          </div>
+    
         </div>
       </div>
     </div>
